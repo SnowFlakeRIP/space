@@ -1,33 +1,10 @@
 const TelegramBot = require('node-telegram-bot-api');
-
 // replace the value below with the Telegram token you receive from @BotFather
 const token = '1456051426:AAGf2mtOc3oE6JsYsjbx5HETNuq5oI2wSVQ';
-
 // Create a bot that uses 'polling' to fetch new updates
-const bot = new TelegramBot(token,  {polling: true});
-
-// Matches "/echo [whatever]"
-bot.onText(/\/echo (.+)/, (msg, match) => {
-    // 'msg' is the received Message from Telegram
-    // 'match' is the result of executing the regexp above on the text content
-    // of the message
-
-    const chatId = msg.chat.id;
-    const resp = match[1]; // the captured "whatever"
-
-    // send back the matched "whatever" to the chat
-    bot.sendMessage(chatId, resp);
-});
-
+const bot = new TelegramBot(token, {polling: true});
 // Listen for any kind of message. There are different kinds of
 // messages.
-bot.on('message', (msg) => {
-    const chatId = msg.chat.id;
-
-    // send a message to the chat acknowledging receipt of their message
-    // bot.sendMessage(chatId, msg.chat.id);
-});
-
 
 const fastify = require('fastify')({
     logger: true
@@ -37,7 +14,7 @@ let obj = {}
 const config = {
     user: 'postgres',
     password: 'q20047878',
-    host: '127.0.0.1',
+    host: '192.168.0.2',
     port: 5432,
     database: 'space',
 
@@ -85,13 +62,32 @@ fastify.route({
     async handler(request, reply) {
         let user = null;
         let client = await pool.connect()
+        let price = 0
+        let uslugi = 0
+        let money = 0
         console.log(request.body.photo)
         console.log(request.body.disk)
+        if (request.body.name_of_company === 'SpaceX') {
+            price = 350000
+        } else if (request.body.name_of_company === 'Virgin Galactic') {
+            price = 250000
+        } else if (request.body.name_of_company === 'Blue Origin') {
+            price = 250000
+        }
+        if (request.body.photo === true & request.body.disk) {
+            uslugi = 150000
+        } else if (request.body.photo === true & request.body.disk === false) {
+            uslugi = 100000
+        }else if(request.body.photo === false & request.body.disk === true){
+            uslugi = 50000
+        }
+        money = uslugi + price
         try {
             // INSERT INTO foo (bar) values ('blah');
             request.body.date = new Date(request.body.date)
-            user = await client.query(`insert into "clients" (name, surname, second_name, date, count, name_of_company, photo, disk)
-                                       values ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id`,
+            user = await client.query(`insert into "clients" (name, surname, second_name, date, count, name_of_company,
+                                                              photo, disk, price)
+                                       values ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id`,
                 [
                     request.body.name,
                     request.body.surname,
@@ -100,7 +96,8 @@ fastify.route({
                     request.body.count,
                     request.body.name_of_company,
                     request.body.photo,
-                    request.body.disk
+                    request.body.disk,
+                    money
                 ])
             //
             if (request.body.photo === true) {
@@ -122,8 +119,9 @@ fastify.route({
             Компания: ${request.body.name_of_company},
             Фотограф: ${request.body.photo}
             Диск: ${request.body.disk}
-            
            `);
+            let url = 'https://cdn2.iconfinder.com/data/icons/scenarium-vol-4/128/039_cat_kitty_pussy_pussycat_animal_sleep_meow-256.png'
+            await bot.sendPhoto(539715503, url)
             reply.send({
                 succes: true
             })
@@ -136,29 +134,38 @@ fastify.route({
 });
 
 bot.onText(/\/sold/, (msg, match) => {
-    // 'msg' is the received Message from Telegram
-    // 'match' is the result of executing the regexp above on the text content
-    // of the message
+    pool.connect((err, client, release) => {
+        if (err) {
+            return console.error('Error acquiring client', err.stack)
+        }
+        client.query('select price from "clients"', (err, result) => {
+            release()
+            if (err) {
+                return console.error('Error executing query', err.stack)
+            }
+            let sum = 0
+            for (let i = 0; i < result.rows.length; i++) {
+                sum = sum + result.rows[i].price
+            }
 
-    const chatId = 539715503;
-    const resp = `text`; // the captured "whatever"
-
-    // send back the matched "whatever" to the chat
-    bot.sendMessage(chatId, resp);
+            msg = `Продано билетов на сумму ${sum}$`
+            const chatId = 539715503;
+            const resp = msg;
+            bot.sendMessage(chatId, resp);
+        })
+    })
 });
-fastify.get('/get-sold', async function (request, reply) {
-    let users = null;
-    let client = await pool.connect()
-    try {
-        users = await client.query(`select * from "clients"`)
-        reply.send(users.rows)
-    } catch (e) {
-        console.log(e)
-    } finally {
-        client.release()
-    }
-})
-
+bot.onText(/\/love/, function onLoveText(msg) {
+    const opts = {
+        reply_to_message_id: msg.message_id,
+        reply_markup: JSON.stringify({
+            keyboard: [
+                ['/sold']
+            ]
+        })
+    };
+    bot.sendMessage(msg.chat.id, opts);
+});
 fastify.listen(3000, function (err, address) {
     if (err) {
         fastify.log.error(err)
