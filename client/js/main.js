@@ -16,6 +16,8 @@ $(function () {
         $('.menu__list').toggleClass('active')
     });
 });
+console.log(window.pageYOffset)
+
 function upFirst(str) {
     if (!str) return str;
 
@@ -28,7 +30,27 @@ select.addEventListener('change', function () {
     localStorage.setItem('company', key)
 })
 
-
+document.querySelector('.virgin_galactic').onclick = function (){
+    localStorage.setItem('company','Virgin Galactic')
+    select.value = select[1].value
+    window.scrollTo(0,7864)
+}
+document.querySelector('.blue_origin').onclick = function (){
+    localStorage.setItem('company','Blue Origin')
+    select.value = select[2].value
+    window.scrollTo(0,7864)
+}
+document.querySelector('.space_x').onclick = function (){
+    localStorage.setItem('company','Space X')
+    select.value = select[3].value
+    window.scrollTo(0,7864)
+}
+document.querySelector('.bron').onclick = function (){
+    window.scrollTo(0,7864)
+}
+document.querySelector('.bron2').onclick = function (){
+    window.scrollTo(0,7864)
+}
 async function postData(url = '', data = {}) {
 
     // Default options are marked with *
@@ -68,6 +90,7 @@ document.querySelector('.check-disk').onchange = function () {
     console.log(checkDisk)
     document.querySelector('.disk').classList.toggle('green')
 }
+// Отправка данных с формы
 document.querySelector('.go').onclick = function () {
     event.preventDefault()
     let name = upFirst(document.querySelector('.name').value)
@@ -117,4 +140,16 @@ document.querySelector('.go').onclick = function () {
     }
 
 }
-
+// Скроллы
+document.querySelector('.about-us').onclick = function (){
+    window.scrollTo(0,950)
+}
+document.querySelector('.uslugi').onclick = function (){
+    window.scrollTo(0,6369)
+}
+document.querySelector('.garant').onclick = function (){
+    window.scrollTo(0,7864)
+}
+document.querySelector('.cosmonaut').onclick = function (){
+    window.scrollTo(0,7864)
+}
