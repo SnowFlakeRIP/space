@@ -5,16 +5,16 @@
 }
 @font-face {
     font-family: 'sf-pro-display';
-    src: url('../fonts/SF-Pro-Display-Regular.woff2') format('woff2'),
-         url('../fonts/SF-Pro-Display-Regular.woff') format('woff');
+    src: url('./fonts/SF-Pro-Display-Regular.woff2') format('woff2'),
+         url('./fonts/SF-Pro-Display-Regular.woff') format('woff');
     font-style: normal;
     font-weight: normal;
     font-display: swap;
 }
 @font-face {
     font-family: 'sf-pro-display';
-    src: url('../fonts/SF-Pro-Display-Bold.woff2') format('woff2'),
-         url('../fonts/SF-Pro-Display-Bold.woff') format('woff');
+    src: url('./fonts/SF-Pro-Display-Bold.woff2') format('woff2'),
+         url('./fonts/SF-Pro-Display-Bold.woff') format('woff');
     font-style: normal;
     font-weight: bold;
     font-display: swap;
@@ -37,8 +37,8 @@ option:active{
 }
 @font-face {
     font-family: 'spaceagecyrillic';
-    src: url('../fonts/spaceagecyrillic-regular.woff2') format('woff2'),
-         url('../fonts/spaceagecyrillic-regular.woff') format('woff');
+    src: url('./fonts/spaceagecyrillic-regular.woff2') format('woff2'),
+         url('./fonts/spaceagecyrillic-regular.woff') format('woff');
     font-style: normal;
     font-weight: normal;
     font-display: swap;
@@ -67,7 +67,7 @@ body{
     padding: 0 10px;
 }
 .header{
-    background-image: url(../images/preview.jpg);
+    background-image: url(./images/preview.jpg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -153,7 +153,7 @@ body{
     margin-left: 52px;
 }
 .about {
-    background-image: url(../images/about__bg.jpg);
+    background-image: url(./images/about__bg.jpg);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -239,7 +239,7 @@ body{
     line-height: 14px;
 }
 .how__to {
-    background-image: url(../images/howto-bg.jpg);
+    background-image: url(./images/howto-bg.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: top center;
@@ -272,7 +272,7 @@ foreignObject{
     text-align: left;
 }
 .to__book {
-    background-image: url(../images/tobook-bg.png);
+    background-image: url(./images/tobook-bg.png);
     background-size: cover;
     background-repeat: no-repeat;
     background-position:top center;
@@ -295,7 +295,7 @@ foreignObject{
    
 }
 .info{
-    background-image: url(../images/info-bg.jpg);
+    background-image: url(./images/info-bg.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: top center;
@@ -403,7 +403,7 @@ foreignObject{
     position: absolute;
     right: 0;
     bottom: 43px;
-    background-image: url(../images/photograpf.png);
+    background-image: url(./images/photograpf.png);
     width: 192px;
     height: 150px;
 }
@@ -492,7 +492,7 @@ foreignObject{
     margin-left: auto;
 }
 .footer{
-    background-image: url(../images/footer-bg.jpg);
+    background-image: url(./images/footer-bg.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: top center;
